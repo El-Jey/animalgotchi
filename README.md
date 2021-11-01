@@ -11,4 +11,6 @@
 - `docker exec app npm install`
 - `docker exec app composer install`
 - `docker-compose exec app php artisan key:generate`
-- `npm run watch-poll`
+- `npm run watch`
+- import **animalgotchi.sql** to database
+- go to <http://localhost>

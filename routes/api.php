@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +11,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return response()->json(['Api reached!']);
-});
+Route::get('/animals', 'AnimalsController@animalsAvailable');
+Route::get('/animals/{user_id}', 'AnimalsController@userAnimals');
+Route::post('/animals/add', 'AnimalsController@addAnimal');
+Route::post('/animals/age', 'AnimalsController@growAnimal');
