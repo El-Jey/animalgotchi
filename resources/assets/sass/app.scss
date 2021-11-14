@@ -6,6 +6,7 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons/font/bootstrap-icons';
 
 html,
 body {
@@ -52,6 +53,10 @@ body {
         .popup-alert {
             font-size: initial;
             z-index: 1060;
+
+            .bi {
+                font-size: 24px;
+            }
         }
     }
 

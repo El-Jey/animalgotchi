@@ -1,6 +1,6 @@
 // Mutations
 export const ALERT = 'alrtPopup';
-export const ANIMALS_AVAILABLE = 'animalsAvailable';
+export const AVAILABLE_ANIMALS = 'allAvailableAnimals';
 export const INIT_GROWTH = 'animalGrowthInit';
 export const KIND_TO_ADD = 'animalKindToAdd';
 export const TOGGLE_ADD_FORM = 'toggleAddForm';

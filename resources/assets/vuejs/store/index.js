@@ -9,13 +9,17 @@ const store = new Vuex.Store({
         alert: {
             show: null,
             message: null,
-            timeout: null
+            timeout: null,
+            type: null
         },
         animals: [],
-        addFormShow: false,
         animalToAdd: null,
         config: {
             lifecycle: 0.5, // Minutes
+        },
+        showAddForm: false,
+        text: {
+            animalAddedSuccess: 'Животное добавлено',
         },
         userAnimals: []
     },
@@ -30,7 +34,7 @@ const store = new Vuex.Store({
                 }
             }, timeout);
         },
-        [types.ANIMALS_AVAILABLE](state, data) {
+        [types.AVAILABLE_ANIMALS](state, data) {
             state.animals = data;
         },
         [types.KIND_TO_ADD](state, data) {
@@ -41,7 +45,7 @@ const store = new Vuex.Store({
             state.userAnimals.splice(index, 1, growingAnimal);
         },
         [types.TOGGLE_ADD_FORM](state, data) {
-            state.addFormShow = data;
+            state.showAddForm = data;
         },
         [types.USER_ANIMALS](state, data) {
             if (Array.isArray(data)) {

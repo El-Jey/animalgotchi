@@ -35,7 +35,7 @@
                 </button>
 
                 <add-animal-modal
-                    v-if="addFormShow"
+                    v-if="showAddForm"
                     :animalKind="selectedKind"
                 ></add-animal-modal>
             </div>
@@ -47,7 +47,7 @@
 // Components
 import AddAnimalModal from "./modals/AddAnimal";
 
-import { ALERT, ANIMALS_AVAILABLE, TOGGLE_ADD_FORM } from "../store/types";
+import { ALERT, AVAILABLE_ANIMALS, TOGGLE_ADD_FORM } from "../store/types";
 
 export default {
     components: { AddAnimalModal },
@@ -60,7 +60,7 @@ export default {
         this.$axios
             .get("/api/animals")
             .then((response) => {
-                return this.$store.commit(ANIMALS_AVAILABLE, response.data);
+                return this.$store.commit(AVAILABLE_ANIMALS, response.data);
             })
             .catch((error) => {
                 return this.$store.commit(ALERT, {
@@ -70,8 +70,8 @@ export default {
             });
     },
     computed: {
-        addFormShow() {
-            return this.$store.state.addFormShow;
+        showAddForm() {
+            return this.$store.state.showAddForm;
         },
         animals() {
             return this.$store.state.animals;

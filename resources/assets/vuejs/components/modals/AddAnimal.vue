@@ -100,6 +100,7 @@ export default {
                         return this.$store.commit(ALERT, {
                             show: true,
                             message: body.error,
+                            type: "error",
                         });
                     }
 
@@ -109,6 +110,12 @@ export default {
                     this.$store.dispatch(INIT_GROWTH, {
                         axios: this.$axios,
                         animal,
+                    });
+
+                    this.$store.commit(ALERT, {
+                        show: true,
+                        message: this.textSuccess,
+                        type: "success",
                     });
 
                     this.close();
@@ -128,6 +135,11 @@ export default {
             if (this.inputError) {
                 this.inputError = false;
             }
+        },
+    },
+    computed: {
+        textSuccess() {
+            return this.$store.state.text.animalAddedSuccess;
         },
     },
 };

@@ -5577,7 +5577,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.$axios.get("/api/animals").then(function (response) {
-      return _this.$store.commit(_store_types__WEBPACK_IMPORTED_MODULE_1__["ANIMALS_AVAILABLE"], response.data);
+      return _this.$store.commit(_store_types__WEBPACK_IMPORTED_MODULE_1__["AVAILABLE_ANIMALS"], response.data);
     })["catch"](function (error) {
       return _this.$store.commit(_store_types__WEBPACK_IMPORTED_MODULE_1__["ALERT"], {
         show: true,
@@ -5586,8 +5586,8 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   computed: {
-    addFormShow: function addFormShow() {
-      return this.$store.state.addFormShow;
+    showAddForm: function showAddForm() {
+      return this.$store.state.showAddForm;
     },
     animals: function animals() {
       return this.$store.state.animals;
@@ -5714,7 +5714,8 @@ __webpack_require__.r(__webpack_exports__);
         if (!body.data) {
           return _this.$store.commit(_store_types__WEBPACK_IMPORTED_MODULE_0__["ALERT"], {
             show: true,
-            message: body.error
+            message: body.error,
+            type: "error"
           });
         }
 
@@ -5725,6 +5726,12 @@ __webpack_require__.r(__webpack_exports__);
         _this.$store.dispatch(_store_types__WEBPACK_IMPORTED_MODULE_0__["INIT_GROWTH"], {
           axios: _this.$axios,
           animal: animal
+        });
+
+        _this.$store.commit(_store_types__WEBPACK_IMPORTED_MODULE_0__["ALERT"], {
+          show: true,
+          message: _this.textSuccess,
+          type: "success"
         });
 
         _this.close();
@@ -5744,6 +5751,11 @@ __webpack_require__.r(__webpack_exports__);
       if (this.inputError) {
         this.inputError = false;
       }
+    }
+  },
+  computed: {
+    textSuccess: function textSuccess() {
+      return this.$store.state.text.animalAddedSuccess;
     }
   }
 });
@@ -5789,10 +5801,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
-    message: function message() {
-      return this.$store.state.alert.message;
+    alert: function alert() {
+      return this.$store.state.alert;
     }
   }
 });
@@ -11420,7 +11440,7 @@ var render = function () {
                 )
               }),
               _vm._v(" "),
-              _vm.addFormShow
+              _vm.showAddForm
                 ? _c("add-animal-modal", {
                     attrs: { animalKind: _vm.selectedKind },
                   })
@@ -11595,37 +11615,37 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass:
-        "\n        popup-alert\n        alert alert-danger\n        d-flex\n        align-items-center\n        justify-content-center\n        position-absolute\n        top-100\n        start-50\n        translate-middle\n    ",
-    },
-    [
-      _c(
-        "svg",
+  return _vm.alert.type === "error"
+    ? _c(
+        "div",
         {
-          staticClass: "bi bi-exclamation-triangle-fill",
-          attrs: {
-            xmlns: "http://www.w3.org/2000/svg",
-            width: "24",
-            height: "24",
-            fill: "currentColor",
-            viewBox: "0 0 16 16",
-          },
+          staticClass:
+            "\n        popup-alert\n        alert alert-danger\n        d-flex\n        align-items-center\n        justify-content-center\n        position-absolute\n        top-100\n        start-50\n        translate-middle\n    ",
         },
         [
-          _c("path", {
-            attrs: {
-              d: "M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z",
-            },
-          }),
+          _c("i", { staticClass: "bi bi-exclamation-triangle-fill" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "ms-2" }, [
+            _vm._v(_vm._s(_vm.alert.message)),
+          ]),
         ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "ms-2" }, [_vm._v(_vm._s(_vm.message))]),
-    ]
-  )
+      )
+    : _vm.alert.type === "success"
+    ? _c(
+        "div",
+        {
+          staticClass:
+            "\n        popup-alert\n        alert alert-success\n        d-flex\n        align-items-center\n        justify-content-center\n        position-absolute\n        top-100\n        start-50\n        translate-middle\n    ",
+        },
+        [
+          _c("i", { staticClass: "bi bi-check-circle-fill" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "ms-2" }, [
+            _vm._v(_vm._s(_vm.alert.message)),
+          ]),
+        ]
+      )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -25529,14 +25549,18 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     alert: {
       show: null,
       message: null,
-      timeout: null
+      timeout: null,
+      type: null
     },
     animals: [],
-    addFormShow: false,
     animalToAdd: null,
     config: {
       lifecycle: 0.5 // Minutes
 
+    },
+    showAddForm: false,
+    text: {
+      animalAddedSuccess: 'Животное добавлено'
     },
     userAnimals: []
   },
@@ -25548,7 +25572,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
         state.alert[key] = null;
       }
     }, timeout);
-  }), _defineProperty(_mutations, _types__WEBPACK_IMPORTED_MODULE_2__["ANIMALS_AVAILABLE"], function (state, data) {
+  }), _defineProperty(_mutations, _types__WEBPACK_IMPORTED_MODULE_2__["AVAILABLE_ANIMALS"], function (state, data) {
     state.animals = data;
   }), _defineProperty(_mutations, _types__WEBPACK_IMPORTED_MODULE_2__["KIND_TO_ADD"], function (state, data) {
     state.userAnimals = data;
@@ -25558,7 +25582,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     });
     state.userAnimals.splice(index, 1, growingAnimal);
   }), _defineProperty(_mutations, _types__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_ADD_FORM"], function (state, data) {
-    state.addFormShow = data;
+    state.showAddForm = data;
   }), _defineProperty(_mutations, _types__WEBPACK_IMPORTED_MODULE_2__["USER_ANIMALS"], function (state, data) {
     if (Array.isArray(data)) {
       state.userAnimals = data;
@@ -25614,13 +25638,13 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*!***********************************************!*\
   !*** ./resources/assets/vuejs/store/types.js ***!
   \***********************************************/
-/*! exports provided: ALERT, ANIMALS_AVAILABLE, INIT_GROWTH, KIND_TO_ADD, TOGGLE_ADD_FORM, USER_ANIMALS, LETS_GROW, REQUEST_VEHICLES_SETTINGS */
+/*! exports provided: ALERT, AVAILABLE_ANIMALS, INIT_GROWTH, KIND_TO_ADD, TOGGLE_ADD_FORM, USER_ANIMALS, LETS_GROW, REQUEST_VEHICLES_SETTINGS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ALERT", function() { return ALERT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ANIMALS_AVAILABLE", function() { return ANIMALS_AVAILABLE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AVAILABLE_ANIMALS", function() { return AVAILABLE_ANIMALS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INIT_GROWTH", function() { return INIT_GROWTH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "KIND_TO_ADD", function() { return KIND_TO_ADD; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOGGLE_ADD_FORM", function() { return TOGGLE_ADD_FORM; });
@@ -25629,7 +25653,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REQUEST_VEHICLES_SETTINGS", function() { return REQUEST_VEHICLES_SETTINGS; });
 // Mutations
 var ALERT = 'alrtPopup';
-var ANIMALS_AVAILABLE = 'animalsAvailable';
+var AVAILABLE_ANIMALS = 'allAvailableAnimals';
 var INIT_GROWTH = 'animalGrowthInit';
 var KIND_TO_ADD = 'animalKindToAdd';
 var TOGGLE_ADD_FORM = 'toggleAddForm';

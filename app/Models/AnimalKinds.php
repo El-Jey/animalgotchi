@@ -9,6 +9,8 @@ class AnimalKinds extends Model
 
     /**
      * @method Check if kind is available
+     * @param {number} $animalId
+     * @return {AnimalKinds} model
      */
     public static function isAvailable($animalId)
     {
