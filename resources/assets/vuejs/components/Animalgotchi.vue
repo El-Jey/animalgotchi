@@ -2,16 +2,18 @@
     <div class="simulator container-fluid h-100 p-4">
         <animals-selector></animals-selector>
         <animals-playground></animals-playground>
+        <alert-popup v-if="alert.show"></alert-popup>
     </div>
 </template>
 
 <script>
 import AnimalsSelector from "./AnimalsSelector";
 import AnimalsPlayground from "./AnimalsPlayground";
-import { USER_ANIMALS, INIT_GROWTH } from "../store/types";
+import AlertPopup from "./popups/Alert.vue";
+import { ALERT, INIT_GROWTH, USER_ANIMALS } from "../store/types";
 
 export default {
-    components: { AnimalsSelector, AnimalsPlayground },
+    components: { AlertPopup, AnimalsPlayground, AnimalsSelector },
     beforeCreate() {
         const userId = 1;
 
@@ -19,54 +21,27 @@ export default {
             .get(`/api/animals/${userId}`)
             .then((response) => {
                 this.$store.commit(USER_ANIMALS, response.data);
+
+                const growingAnimals = this.$store.getters.growingAnimals;
+                if (growingAnimals.length) {
+                    growingAnimals.forEach((animal) => {
+                        this.$store.dispatch(INIT_GROWTH, {
+                            axios: this.$axios,
+                            animal,
+                        });
+                    });
+                }
             })
             .catch((error) => {
-                return console.log(error);
+                return this.$store.commit(ALERT, {
+                    show: true,
+                    message: error,
+                });
             });
     },
-    watch: {
-        userAnimals: function () {
-            const growingAnimals = this.$store.getters.growingAnimals;
-
-            if (growingAnimals.length) {
-                growingAnimals.forEach((animal) => {
-                    const interval =
-                        (this.$store.state.config.lifecycle * 60 * 1000) /
-                        animal.max_age;
-
-                    let timer = setInterval(() => {
-                        this.$store
-                            .dispatch(INIT_GROWTH, {
-                                axios: this.$axios,
-                                animalId: animal.id,
-                            })
-                            .then((data) => {
-                                if (
-                                    data.age < data.max_age ||
-                                    data.size < data.max_size
-                                ) {
-                                    let imageElement = document.querySelector(
-                                        `[data-my-animal="${animal.id}"] > img`
-                                    );
-
-                                    imageElement.style.width = `${data.size}%`;
-                                } else {
-                                    console.log('clear111111');
-                                    clearInterval(timer);
-                                }
-                            })
-                            .catch((error) => {
-                                alert("Произошла ошибка. Попробуйте позже");
-                                return console.error(error);
-                            });
-                    }, interval);
-                });
-            }
-        },
-    },
     computed: {
-        userAnimals() {
-            return this.$store.state.userAnimals;
+        alert() {
+            return this.$store.state.alert;
         },
     },
 };

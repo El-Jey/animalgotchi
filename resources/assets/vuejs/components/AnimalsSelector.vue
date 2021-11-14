@@ -23,9 +23,8 @@
                 <button
                     v-for="animal in animals"
                     class="animals-ellipse btn p-0 flex-center mx-1"
-                    @click="selectAnimal"
+                    @click="selectAnimal(animal.id)"
                     :key="animal.id"
-                    :data-id="animal.id"
                     :disabled="isAnimalAvailable(animal.id)"
                 >
                     <img
@@ -48,7 +47,7 @@
 // Components
 import AddAnimalModal from "./modals/AddAnimal";
 
-import { ANIMALS_AVAILABLE, TOGGLE_ADD_FORM } from "../store/types";
+import { ALERT, ANIMALS_AVAILABLE, TOGGLE_ADD_FORM } from "../store/types";
 
 export default {
     components: { AddAnimalModal },
@@ -64,7 +63,10 @@ export default {
                 return this.$store.commit(ANIMALS_AVAILABLE, response.data);
             })
             .catch((error) => {
-                return console.log(error);
+                return this.$store.commit(ALERT, {
+                    show: true,
+                    message: error,
+                });
             });
     },
     computed: {
@@ -80,14 +82,12 @@ export default {
     },
     methods: {
         isAnimalAvailable(animalId) {
-            return this.userAnimals.find((animal) => animal.animal_kind_id == animalId);
-        },
-        selectAnimal(e) {
-            const animalId = parseInt(
-                e.target.closest(".animals-ellipse").getAttribute("data-id")
+            return this.userAnimals.find(
+                (animal) => animal.animal_kind_id == animalId
             );
-
-            this.selectedKind = this.$store.getters.getAnimalKind(animalId);
+        },
+        selectAnimal(animalId) {
+            this.selectedKind = this.$store.getters.getAnimalKind(animalId); // props
             this.$store.commit(TOGGLE_ADD_FORM, true);
         },
     },

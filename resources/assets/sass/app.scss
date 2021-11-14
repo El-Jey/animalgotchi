@@ -48,6 +48,11 @@ body {
         .animal-image {
             width: 1%;
         }
+
+        .popup-alert {
+            font-size: initial;
+            z-index: 1060;
+        }
     }
 
     .add-animal-modal {

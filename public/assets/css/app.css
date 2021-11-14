@@ -12229,6 +12229,12 @@ body .simulator .animal-image {
   width: 1%;
 }
 
+html .simulator .popup-alert,
+body .simulator .popup-alert {
+  font-size: initial;
+  z-index: 1060;
+}
+
 html .add-animal-modal,
 body .add-animal-modal {
   display: block;

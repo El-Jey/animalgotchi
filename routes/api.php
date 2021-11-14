@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/animals', 'AnimalsController@animalsAvailable');
-Route::get('/animals/{user_id}', 'AnimalsController@userAnimals');
-Route::post('/animals/add', 'AnimalsController@addAnimal');
-Route::post('/animals/age', 'AnimalsController@growAnimal');
+Route::get('/animals', 'AnimalKindsController@allAvailable');
+Route::get('/animals/{user_id}', 'UserAnimalsController@all');
+Route::post('/animals/add', 'UserAnimalsController@new');
+Route::post('/animals/age', 'UserAnimalsController@grow');

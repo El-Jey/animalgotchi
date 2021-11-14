@@ -4,7 +4,6 @@
             v-for="animal in userAnimals"
             :key="animal.id"
             class="col-3 flex-shrink-0 flex-grow-1 flex-wrap"
-            :data-my-animal="animal.id"
         >
             <img
                 class="animal-image h-50"
