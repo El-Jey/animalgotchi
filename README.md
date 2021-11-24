@@ -8,10 +8,10 @@
 - `cd animalgotchi`
 - `cp .env.example .env`
 - Change .env config
- ### development
- - `make && make dev`
+     ### development
+     - `make && make dev`
 
- ### production
- - `make && make prod`
+     ### production
+     - `make && make prod`
 - import **animalgotchi.sql** to database
 - go to <http://localhost>
