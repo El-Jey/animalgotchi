@@ -12,6 +12,6 @@
  - `make && make dev`
 
  ### production
-    - `make && make prod`
+ - `make && make prod`
 - import **animalgotchi.sql** to database
 - go to <http://localhost>
